@@ -1,0 +1,28 @@
+version : '3.9'
+
+services:
+  postgres:
+    container_name: db_container1
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: 12345678
+      POSTGRES_USER: postgres
+      POSTGRES_DB: crud_postgres
+
+  app:
+    container_name: node_server
+    build: .
+    depends_on:
+      - "postgres"
+    links:
+      - "postgres"
+    environment:
+      DB_PASSWORD: '12345678'
+      DB_USER: 'postgres'
+      DB_NAME: 'crud_postgres'
+      DB_HOST: 'postgres'
+      PORT: 8080
+    ports:
+      - '8080:8080'
+    command: npm start
+      
